@@ -1,5 +1,7 @@
 import { UserAuthForm } from "~/components/UserAuthForm";
 import { Link } from "@remix-run/react";
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { authenticator } from "~/services/auth.server";
 
 export default function RegisterPage() {
   return (
@@ -11,7 +13,7 @@ export default function RegisterPage() {
             <h1>MPMA</h1>
           </div>
           <div className="h-full flex flex-col justify-center items-center ">
-            <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] z-20 mb-[120px] bg-primary px-12 ">
+            <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] z-20 mb-[120px] bg-gray-800 py-6 border rounded-lg px-12 ">
               <div className="flex flex-col space-y-2 text-center">
                 <h1 className="text-2xl font-semibold tracking-tight text-white">
                   Create a new account
@@ -59,4 +61,14 @@ export default function RegisterPage() {
       </div>
     </>
   );
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  return await authenticator.authenticate("user-pass", request, {
+    successRedirect: "/",
+    failureRedirect: "/register?error=true",
+  });
+}
+export async function loader({ request }: LoaderFunctionArgs) {
+  return {};
 }

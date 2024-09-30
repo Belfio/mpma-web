@@ -5,7 +5,7 @@ import { Icons } from "~/components/icons";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Form } from "@remix-run/react";
+import { Form, useSearchParams } from "@remix-run/react";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   signup?: boolean;
@@ -14,12 +14,14 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function UserAuthForm({
   className,
-  signup,
+  signup = false,
   dark,
   ...props
 }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [searchParams] = useSearchParams();
 
+  const error = searchParams.get("error") === "true";
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
@@ -58,7 +60,11 @@ export function UserAuthForm({
               autoCorrect="off"
               disabled={isLoading}
             />
-            <input type="hidden" name="register" value="true" />
+            <input
+              type="hidden"
+              name="register"
+              value={JSON.stringify(signup)}
+            />
           </div>
           <Button
             disabled={isLoading}
@@ -70,6 +76,7 @@ export function UserAuthForm({
             )}
             {signup ? "Sign Up" : "Log In"}
           </Button>
+          {error && <p className="text-red-500 text-center">Login failed</p>}
         </div>
       </Form>
 

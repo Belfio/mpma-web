@@ -1,8 +1,8 @@
 {
-  "name": "@monorepo-template/scripts",
+  "name": "@mpma-web/scripts",
   "version": "0.0.0",
   "dependencies": {
-    "@monorepo-template/core": "*",
+    "@mpma-web/core": "*",
     "sst": "*"
   },
   "scripts": {

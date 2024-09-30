@@ -27,19 +27,9 @@ export const s3UploaderHandler: <T extends UploadHandlerPart>(
   }
 
   // If it is a file, I'll upload it to S3
-  let s3FileName = "";
-  switch (folder) {
-    case "models":
-      s3FileName = `${valueId}/${filename}`;
-      console.log("s3FileName", s3FileName);
-      return await s3.models.upload(data, s3FileName, contentType);
-    case "datasets":
-      s3FileName = `${valueId}/${filename.split(".")[0]}.zip`;
-      console.log("s3FileName", s3FileName);
-      return await s3.datasets.upload(data, s3FileName, contentType);
-    default:
-      break;
-  }
+  const s3FileName = `${valueId}/${filename}`;
+  await s3.audio.upload(data, s3FileName, contentType);
+  return s3FileName;
 };
 
 export const externalLinkUploader = async (

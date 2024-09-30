@@ -16,7 +16,8 @@ authenticator.use(
   new FormStrategy(async ({ form }) => {
     const email = form.get("email");
     const password = form.get("password");
-    const isRegistering = form.get("register");
+    const isRegistering = JSON.parse(form.get("register") as string);
+    console.log("isRegistering", isRegistering, email, password);
     if (typeof email !== "string" || typeof password !== "string") {
       return;
     }

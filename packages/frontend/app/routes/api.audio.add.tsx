@@ -7,6 +7,7 @@ import {
   redirect,
 } from "@remix-run/node";
 import db from "~/lib/db";
+import { AudioType } from "~/lib/types";
 import { randomId } from "~/lib/utils";
 import { s3UploaderHandler } from "~/services/upload.server";
 
@@ -25,17 +26,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     request,
     s3uploaderWithId
   );
+  console.log("formData", formData);
+  const audioProfile: AudioType = {
+    audioId: modelId,
+    fileName: formData.get("file") as string,
+    userId: formData.get("userId") as string,
+    title: formData.get("file") as string,
+    createdAt: new Date().toISOString(),
+  };
 
-  return redirect("/models");
+  await db.audio.create({
+    ...audioProfile,
+  });
+
+  return redirect("/audio");
 };
 
-const getFilesSize = (modelId: string) => {
-  // const files = db.file.findMany({
-  //   where: {
-  //     modelId: modelId,
-  //   },
-  // });
-  // return files.reduce((acc, file) => acc + file.size, 0);
-  console.log("getFilesSize TBD", modelId[0]);
-  return "n/a";
-};
+// const getFilesSize = (modelId: string) => {
+//   // const files = db.file.findMany({
+//   //   where: {
+//   //     modelId: modelId,
+//   //   },
+//   // });
+//   // return files.reduce((acc, file) => acc + file.size, 0);
+//   console.log("getFilesSize TBD", modelId[0]);
+//   return "n/a";
+// };

@@ -2,20 +2,28 @@ import db from "~/lib/db";
 import { CredType } from "~/lib/types";
 
 import bcryptjs from "bcryptjs";
+import { randomId } from "~/lib/utils";
 
 export async function login(
   email: string,
   password: string
 ): Promise<CredType | null> {
-  console.log("logging in user");
+  console.log("trying to login");
   const user = await db.cred.get(email);
-  if (!user) return null;
+  console.log("user", user);
+  if (!user) {
+    console.log("no user");
+    throw new Error("User not found");
+    return null;
+  }
   // const isCorrectPassword = true;
   const isCorrectPassword = await bcryptjs.compare(password, user.passwordHash);
   if (!isCorrectPassword) {
     console.log("password incorrect");
+    throw new Error("Password incorrect");
     return null;
   }
+  console.log("login success");
   return user;
 }
 
@@ -34,9 +42,7 @@ export async function register({
       email,
       passwordHash,
       createdAt: new Date().toISOString(),
-      userId:
-        Math.random().toString(36).substring(2, 15) +
-        Math.random().toString(36).substring(2, 15),
+      userId: randomId(),
     });
     return { status: "ok" };
   } catch (error) {

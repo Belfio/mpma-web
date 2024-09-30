@@ -23,6 +23,7 @@ export default function UploadForm({
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handleInput", e.target.files);
     if (e.target.files) {
       Array.from(e.target.files).forEach((file) => addFile(file));
     }
