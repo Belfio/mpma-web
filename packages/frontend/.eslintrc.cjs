@@ -81,4 +81,12 @@ module.exports = {
       },
     },
   ],
+  settings: {
+    "import/resolver": {
+      alias: {
+        map: [["~", "./packages/frontend/app"]],
+        extensions: [".ts", ".tsx", ".js", ".jsx"],
+      },
+    },
+  },
 };

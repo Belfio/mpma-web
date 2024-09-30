@@ -13,8 +13,8 @@ body {
 
 @layer base {
   :root {
-    --background: hsl(249, 57%, 88%);
-    --white: hsl(249, 57%, 88%);
+    --background: hsl(0, 0%, 98%);
+    --white: hsl(0, 0%, 92%);
     --foreground: hsl(240, 10%, 3.9%);
     --card: hsl(0, 0%, 100%);
     --card-foreground: 240 10% 3.9%;

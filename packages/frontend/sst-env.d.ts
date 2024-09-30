@@ -5,6 +5,18 @@ import "sst"
 export {}
 declare module "sst" {
   export interface Resource {
+    "AudioRecording": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
+    "AudioUploadBucket": {
+      "name": string
+      "type": "sst.aws.Bucket"
+    }
+    "Credentials": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
     "MPMA-Web": {
       "type": "sst.aws.Remix"
       "url": string
@@ -13,10 +25,6 @@ declare module "sst" {
       "name": string
       "type": "sst.aws.Function"
       "url": string
-    }
-    "MyBucket": {
-      "name": string
-      "type": "sst.aws.Bucket"
     }
     "Users": {
       "name": string

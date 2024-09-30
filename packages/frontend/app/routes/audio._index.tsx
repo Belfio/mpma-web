@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex h-screen mt-12 justify-center">
       <Link to="/audio/upload">
         <Button variant="outline">Upload</Button>
       </Link>

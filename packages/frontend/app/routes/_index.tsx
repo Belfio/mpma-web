@@ -1,4 +1,8 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { useContext, useEffect } from "react";
+import { UserContext } from "~/providers/userContext";
+import { authenticator } from "~/services/auth.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -8,8 +12,13 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const { user } = useLoaderData<typeof loader>();
+  const { setUser } = useContext(UserContext);
+  useEffect(() => {
+    setUser(user);
+  }, [user, setUser]);
   return (
-    <div className="flex h-screen items-center justify-center w-2/3 m-auto">
+    <div className="flex h-screen items-center  w-2/3 m-auto">
       <div className="flex flex-col items-center gap-16">
         <header className="flex flex-col items-center gap-9">
           <h1 className="text-4xl font-bold">From audio to report</h1>
@@ -27,4 +36,12 @@ export default function Index() {
       </div>
     </div>
   );
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  console.log("authed");
+  return { user };
 }

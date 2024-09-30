@@ -1,12 +1,15 @@
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import { sessionStorage } from "~/services/session.server";
-import { Cred } from "~/@/lib/types";
+import { CredType } from "~/lib/types";
 import { login, register } from "./login.server";
+import { isEmail, isPassword } from "~/lib/utils";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-export const authenticator = new Authenticator<Cred>(sessionStorage);
+export const authenticator = new Authenticator<CredType | null | undefined>(
+  sessionStorage
+);
 
 // Tell the Authenticator to use the form strategy
 authenticator.use(
@@ -14,6 +17,15 @@ authenticator.use(
     const email = form.get("email");
     const password = form.get("password");
     const isRegistering = form.get("register");
+    if (typeof email !== "string" || typeof password !== "string") {
+      return;
+    }
+    if (!isEmail(email)) {
+      return;
+    }
+    if (!isPassword(password)) {
+      return;
+    }
     if (isRegistering) {
       try {
         await register({ email, password });
@@ -22,6 +34,7 @@ authenticator.use(
         return;
       }
     }
+
     const user = await login(email, password);
     console.log("Logged");
     // the type of this user must match the type you pass to the Authenticator

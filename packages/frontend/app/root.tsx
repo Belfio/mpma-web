@@ -8,6 +8,7 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 import PlatformLayout from "./components/LayoutOutlet";
 import "./tailwind.css";
+import { UserProvider } from "./providers/userContext";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -32,7 +33,9 @@ export function Layout() {
         <Links />
       </head>
       <body>
-        <PlatformLayout />
+        <UserProvider>
+          <PlatformLayout />
+        </UserProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

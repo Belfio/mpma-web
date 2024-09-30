@@ -21,7 +21,7 @@ export default function Header() {
                 <Button
                   variant="link"
                   className={`text-gray-800 font-regula ${
-                    isActive("/") ? "font-bold" : ""
+                    isActive("/") ? "underline" : ""
                   }`}
                 >
                   Home
@@ -33,7 +33,7 @@ export default function Header() {
                 <Button
                   variant="link"
                   className={`text-gray-800 font-regular ${
-                    isActive("/audio") ? "font-bold" : ""
+                    isActive("/audio") ? "underline" : ""
                   }`}
                 >
                   Audio Recordings
@@ -45,7 +45,7 @@ export default function Header() {
                 <Button
                   variant="link"
                   className={`text-gray-800 font-regular ${
-                    isActive("/reports") ? "font-bold" : ""
+                    isActive("/reports") ? "underline" : ""
                   }`}
                 >
                   Reports

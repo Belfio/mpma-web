@@ -1,12 +1,12 @@
-import db from "~/@/lib/db";
-import { Cred, LoginForm } from "~/@/lib/types";
+import db from "~/lib/db";
+import { CredType } from "~/lib/types";
 
 import bcryptjs from "bcryptjs";
 
 export async function login(
   email: string,
   password: string
-): Promise<Cred | null> {
+): Promise<CredType | null> {
   console.log("logging in user");
   const user = await db.cred.get(email);
   if (!user) return null;
@@ -22,7 +22,10 @@ export async function login(
 export async function register({
   email,
   password,
-}: LoginForm): Promise<{ status: "ok" } | { status: "error"; error: string }> {
+}: {
+  email: string;
+  password: string;
+}): Promise<{ status: "ok" } | { status: "error"; error: string }> {
   console.log("registering user", email, password);
 
   const passwordHash = await bcryptjs.hash(password, 10);
