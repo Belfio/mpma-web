@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "dependencies": {
     "@mpma-web/core": "*",
+    "docx": "^8.5.0",
+    "pdf-parse": "^1.1.1",
     "sst": "*"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.137"
+    "@types/aws-lambda": "^8.10.137",
+    "@types/pdf-parse": "^1.1.4"
   }
 }

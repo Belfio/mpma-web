@@ -26,6 +26,14 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
+    "Report": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
+    "Template": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
     "Users": {
       "name": string
       "type": "sst.aws.Dynamo"

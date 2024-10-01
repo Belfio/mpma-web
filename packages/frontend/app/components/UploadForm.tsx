@@ -28,6 +28,7 @@ export default function UploadForm({
       Array.from(e.target.files).forEach((file) => addFile(file));
     }
   };
+
   return (
     <div className={cn("max-w-4xl mx-auto", className)}>
       <div className=" rounded  mb-6">

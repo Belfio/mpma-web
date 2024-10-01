@@ -1,9 +1,22 @@
-import { userTable, credTable, audioTable } from "./database";
+import {
+  userTable,
+  credTable,
+  audioTable,
+  reportTable,
+  templateTable,
+} from "./database";
 import { audioUploadBucket } from "./storage";
 
 export const site = new sst.aws.Remix("MPMA-Web", {
   path: "./packages/frontend",
-  link: [userTable, credTable, audioUploadBucket, audioTable],
+  link: [
+    userTable,
+    credTable,
+    audioUploadBucket,
+    audioTable,
+    reportTable,
+    templateTable,
+  ],
   environment: {
     OPENAI_ORG: process.env.OPENAI_ORG,
     OPENAI_PROJECT: process.env.OPENAI_PROJECT,

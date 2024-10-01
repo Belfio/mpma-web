@@ -37,3 +37,46 @@ export const audioTable = new sst.aws.Dynamo("AudioRecording", {
     },
   },
 });
+export const templateTable = new sst.aws.Dynamo("Template", {
+  fields: {
+    templateId: "string",
+    userId: "string",
+    createdAt: "string",
+  },
+  primaryIndex: { hashKey: "templateId" },
+  globalIndexes: {
+    CreatedAtIndex: {
+      hashKey: "userId",
+      rangeKey: "createdAt",
+    },
+    UserIndex: {
+      hashKey: "userId",
+    },
+  },
+});
+
+export const reportTable = new sst.aws.Dynamo("Report", {
+  fields: {
+    reportId: "string",
+    audioId: "string",
+    templateId: "string",
+    userId: "string",
+    createdAt: "string",
+  },
+  primaryIndex: { hashKey: "reportId" },
+  globalIndexes: {
+    CreatedAtIndex: {
+      hashKey: "userId",
+      rangeKey: "createdAt",
+    },
+    UserIndex: {
+      hashKey: "userId",
+    },
+    // AudioIndex: {
+    //   hashKey: "audioId",
+    // },
+    // TemplateIndex: {
+    //   hashKey: "templateId",
+    // },
+  },
+});
