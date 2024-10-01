@@ -1,6 +1,6 @@
 import { authenticator } from "~/services/auth.server";
 import { json, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { AudioType, ReportType, TemplateType, UserType } from "~/lib/types";
@@ -70,20 +70,31 @@ export default function UploadAudio() {
               ))}
             </>
           )}
-          {templates && (
-            <Form action={`/api/report/ai`} method="post">
-              <Combobox
-                input={templates.map((template) => ({
-                  value: template.templateId,
-                  label: template.title,
-                }))}
-                placeholder="Select a template"
-              />
-              <input type="hidden" name="userId" value={user.userId} />
-              <input type="hidden" name="audioId" value={audio.audioId} />
-              <Button type="submit">Create report</Button>
-            </Form>
-          )}
+          {templates &&
+            (templates.length > 0 ? (
+              <Form action={`/api/report/ai`} method="post">
+                <Combobox
+                  input={templates.map((template) => ({
+                    value: template.templateId,
+                    label: template.title,
+                  }))}
+                  placeholder="Select a template"
+                />
+                <input type="hidden" name="userId" value={user.userId} />
+                <input type="hidden" name="audioId" value={audio.audioId} />
+                <Button type="submit">Create report</Button>
+              </Form>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <p>
+                  No templates found. Create a template to build your
+                  personalised reports.
+                </p>
+                <Link to="/template/create">
+                  <Button>Create a template</Button>
+                </Link>
+              </div>
+            ))}
         </div>
       </div>
     </div>
