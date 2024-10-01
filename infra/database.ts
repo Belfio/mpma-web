@@ -72,11 +72,11 @@ export const reportTable = new sst.aws.Dynamo("Report", {
     UserIndex: {
       hashKey: "userId",
     },
-    // AudioIndex: {
-    //   hashKey: "audioId",
-    // },
-    // TemplateIndex: {
-    //   hashKey: "templateId",
-    // },
+    AudioIndex: {
+      hashKey: "audioId",
+    },
+    TemplateIndex: {
+      hashKey: "templateId",
+    },
   },
 });

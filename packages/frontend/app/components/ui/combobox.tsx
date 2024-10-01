@@ -21,8 +21,10 @@ import {
 
 export function Combobox({
   input = [],
+  placeholder = "Select",
 }: {
   input: { value: string; label: string }[];
+  placeholder?: string;
 }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -41,13 +43,13 @@ export function Combobox({
           >
             {value
               ? input.find((framework) => framework.value === value)?.label
-              : "Select framework..."}
+              : placeholder}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command>
-            <CommandInput placeholder="Search framework..." />
+            <CommandInput placeholder={placeholder} />
             <CommandList>
               <CommandEmpty>No framework found.</CommandEmpty>
               <CommandGroup>

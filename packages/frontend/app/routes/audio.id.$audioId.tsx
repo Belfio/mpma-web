@@ -38,15 +38,38 @@ export default function UploadAudio() {
             <input type="hidden" name="audioId" value={audio.audioId} />
 
             <Button type="submit">Save</Button>
+            <h3 className="text-xl font-bold mt-8">Transcript</h3>
             <p>{transcript && JSON.stringify(transcript)}</p>
           </Form>
-          {reports &&
-            reports.map((report) => (
-              <div key={report.reportId}>
-                <p>{report.title}</p>
-                <p>{report.report}</p>
-              </div>
-            ))}
+          {reports && (
+            <>
+              <h3 className="text-xl font-bold mt-8">Reports</h3>
+              {reports.map((report) => (
+                <div
+                  key={report.reportId}
+                  className="flex flex-col gap-2  border-gray-400 border-b pb-4 mb-8 pt-2"
+                >
+                  <p>{report.title}</p>
+                  <p>{report.report}</p>
+                  <div className="flex justify-end">
+                    <Form action={`/api/report/delete`} method="post">
+                      <input
+                        type="hidden"
+                        name="reportId"
+                        value={report.reportId}
+                      />
+                      <input
+                        type="hidden"
+                        name="audioId"
+                        value={report.audioId}
+                      />
+                      <Button variant="outline">Delete</Button>
+                    </Form>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
           {templates && (
             <Form action={`/api/report/ai`} method="post">
               <Combobox
@@ -54,6 +77,7 @@ export default function UploadAudio() {
                   value: template.templateId,
                   label: template.title,
                 }))}
+                placeholder="Select a template"
               />
               <input type="hidden" name="userId" value={user.userId} />
               <input type="hidden" name="audioId" value={audio.audioId} />
@@ -72,7 +96,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   });
   if (!user) return redirect("/login");
   const { audioId } = params;
-  console.log("audioId", audioId);
   if (!audioId) return { user, audio: "Error" };
   const audio = await db.audio.get(audioId);
   const transcriptReadable = await s3.audio.getStream(
@@ -82,8 +105,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     transcriptReadable,
     "transcript.json"
   );
-  console.log("transcript", await transcript.text());
-  console.log("authed", audio?.fileName.split(".")[0] + ".json");
   const reports = await db.report.getAll(user.userId);
   const templates = await db.template.getAll(user.userId);
   return json({

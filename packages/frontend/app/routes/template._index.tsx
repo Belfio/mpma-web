@@ -19,7 +19,7 @@ export default function Index() {
       {templates?.length !== 0 ? (
         templates.map((template: TemplateType) => (
           <div key={template.templateId} className="flex ">
-            <Link to={`/reports/id/${template.templateId}`}>
+            <Link to={`/template/id/${template.templateId}`}>
               <Button variant="link">{template.title}</Button>
             </Link>
             <Form
@@ -39,7 +39,7 @@ export default function Index() {
         <p>No templates yet</p>
       )}
       <Link to="/template/create">
-        <Button variant="outline">Create your first report template</Button>
+        <Button variant="outline">Create a new report template</Button>
       </Link>
     </div>
   );

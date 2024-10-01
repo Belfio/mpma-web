@@ -41,7 +41,7 @@ export default function UploadAudio() {
           >
             <input type="hidden" name="userId" value={user.userId} />
 
-            <Input type="file" name="file" />
+            <Input type="file" name="file" accept=".m4a" />
             <Button type="submit">Upload</Button>
             {/* <UploadForm files={files} setFiles={setFiles} className="mt-3" /> */}
           </Form>

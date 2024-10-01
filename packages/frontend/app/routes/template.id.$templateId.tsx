@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import db from "~/lib/db";
-import { ReportType } from "~/lib/types";
+import { TemplateType } from "~/lib/types";
 import { authenticator } from "~/services/auth.server";
 
 export const meta: MetaFunction = () => {
@@ -16,25 +16,25 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const report = useLoaderData<ReportType>();
-  if (!report) return <div>Report not found</div>;
+  const template = useLoaderData<TemplateType>();
+  if (!template) return <div>Template not found</div>;
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="h-2/3 w-2/4 m-auto">
-        <Link to="/reports">
+        <Link to="/template">
           <Button variant="ghost">
             <ArrowLeftIcon className="w-4 h-4" />
           </Button>
         </Link>
         <Form
-          action="/api/report/create"
+          action="/api/template/create"
           method="post"
           className="h-2/3 w-full m-auto"
         >
           <Input
             name="title"
             placeholder="Title"
-            defaultValue={report.title}
+            defaultValue={template.title}
             className="w-full resize-none h-fit border-0 text-xl my-12 shadow-none focus-visible:ring-0"
           />
           <Textarea
@@ -42,9 +42,9 @@ export default function Index() {
 
 
 `}
-            defaultValue={report.report}
+            defaultValue={template.template}
             className="w-full resize-none h-full border-0 text-xl my-12 shadow-none"
-            name="report"
+            name="template"
           />
           <div className="flex justify-end">
             <Button type="submit" className="" variant="secondary">
@@ -61,10 +61,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-  const { reportId } = params;
-  console.log("reportId", reportId);
-  if (!reportId) return { user, report: "Error" };
-  const report = await db.report.get(reportId);
+  const { templateId } = params;
+  console.log("templateId", templateId);
+  if (!templateId) return { user, report: "Error" };
+  const report = await db.template.get(templateId);
 
   return json(report);
 }

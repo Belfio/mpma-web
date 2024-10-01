@@ -24,7 +24,7 @@ export default function Index() {
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="h-2/3 w-2/4 m-auto">
-        <Link to="/reports">
+        <Link to="/template">
           <Button variant="ghost">
             <ArrowLeftIcon className="w-4 h-4" />
           </Button>
@@ -46,7 +46,7 @@ export default function Index() {
 
 `}
             className="w-full resize-none h-full border-0 text-xl my-12 shadow-none"
-            name="report"
+            name="template"
           />
           <div className="flex justify-end">
             <Button type="submit" className="" variant="secondary">
