@@ -47,8 +47,8 @@ async function putFile(bucketName: string, key: string, file: string) {
   return response;
 }
 
-module s3 = {
-  export const uploads= {
+const s3 = {
+  uploads: {
     list: () => listFiles(Resource.UploadsBucket.name),
     get: (key: string) => getFile(Resource.UploadsBucket.name, key),
     put: (key: string, file: string) =>

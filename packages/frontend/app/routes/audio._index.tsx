@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { json, Link, redirect, useLoaderData } from "@remix-run/react";
+import { Form, json, Link, redirect, useLoaderData } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import db from "~/lib/db";
 import { AudioType } from "~/lib/types";
@@ -19,8 +19,17 @@ export default function Index() {
       <div className="flex flex-col gap-4 justify-center text-center">
         {audios &&
           audios.map((audio) => (
-            <div key={audio.audioId} className="">
-              {audio.title}
+            <div key={audio.audioId} className="flex gap-2">
+              <Link to={`/audio/id/${audio.audioId}`}>
+                <div key={audio.audioId} className="">
+                  {audio.title}
+                </div>
+              </Link>
+              <Form method="post" action="/api/audio/delete">
+                <input type="hidden" name="audioId" value={audio.audioId} />
+                <input type="hidden" name="fileName" value={audio.fileName} />
+                <Button variant="outline">Delete</Button>
+              </Form>
             </div>
           ))}
       </div>

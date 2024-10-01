@@ -4,7 +4,7 @@ import s3 from "~/lib/s3";
 export const s3UploaderHandler: <T extends UploadHandlerPart>(
   props: T,
   valueId: string,
-  folder: "models" | "datasets"
+  folder: string
 ) => Promise<string> = async (props, valueId, folder) => {
   const { filename, data, contentType } = props;
 
@@ -27,7 +27,8 @@ export const s3UploaderHandler: <T extends UploadHandlerPart>(
   }
 
   // If it is a file, I'll upload it to S3
-  const s3FileName = `${valueId}/${filename}`;
+  const extension = filename.split(".").pop();
+  const s3FileName = `${folder}/${valueId}.${extension}`;
   await s3.audio.upload(data, s3FileName, contentType);
   return s3FileName;
 };

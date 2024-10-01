@@ -108,6 +108,7 @@ const deleteObjectFromS3 = async (key: string, bucketName: string) => {
     Bucket: BUCKET_NAME,
     Key: key,
   };
+  console.log("Deleting object from S3", key);
   try {
     await s3Client.send(new DeleteObjectCommand(params));
   } catch (error) {

@@ -1,6 +1,6 @@
 import OpenAI from "openai";
-import * as fs from "fs";
-import * as path from "path";
+import fs = require("fs");
+import path = require("path");
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
 const openai = new OpenAI({

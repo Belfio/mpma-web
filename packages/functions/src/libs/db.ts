@@ -8,7 +8,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 
 import { Resource } from "sst";
-import { UserType, CredType, AudioType } from "./types";
+import { UserType } from "./types";
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
@@ -160,58 +160,6 @@ const db = {
     delete: async (userId: string) => {
       await deleteItem(Resource.Users.name, {
         userId,
-      });
-    },
-  },
-  cred: {
-    create: async (cred: CredType) => {
-      const response = await createItem(Resource.Credentials.name, cred);
-      if (!response.isSuccess) {
-        throw new Error(`Error creating user: ${response.msg}`);
-      }
-      return response;
-    },
-    get: async (email: string): Promise<CredType> => {
-      const cred = (await getItem(Resource.Credentials.name, {
-        email,
-      })) as CredType;
-
-      return cred;
-    },
-    delete: async (email: string) => {
-      await deleteItem(Resource.Credentials.name, {
-        email,
-      });
-    },
-  },
-  audio: {
-    getAll: async (userId: string): Promise<AudioType[]> => {
-      const audio = (await queryItems(
-        Resource.AudioRecording.name,
-        "UserIndex",
-        "userId",
-        userId
-      )) as {
-        items: AudioType[];
-      };
-      return audio.items;
-    },
-    create: async (audio: AudioType) => {
-      const response = await createItem(Resource.AudioRecording.name, audio);
-      if (!response.isSuccess) {
-        throw new Error(`Error creating user: ${response.msg}`);
-      }
-      return response;
-    },
-    get: async (audioId: string): Promise<AudioType | null> => {
-      const audio = (await getItem(Resource.AudioRecording.name, {
-        audioId,
-      })) as AudioType;
-      return audio;
-    },
-    delete: async (audioId: string) => {
-      await deleteItem(Resource.AudioRecording.name, {
-        audioId,
       });
     },
   },

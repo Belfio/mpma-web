@@ -27,6 +27,7 @@ export const AudioSchema = z.object({
   userId: z.string(),
   title: z.string(),
   createdAt: z.string(),
+  description: z.string().optional(),
 });
 
 export type AudioType = z.infer<typeof AudioSchema>;

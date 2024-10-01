@@ -3,12 +3,12 @@ import {
   UploadHandler,
   UploadHandlerPart,
   unstable_parseMultipartFormData,
-  json,
   redirect,
 } from "@remix-run/node";
 import db from "~/lib/db";
 import { AudioType } from "~/lib/types";
 import { randomId } from "~/lib/utils";
+import { authenticator } from "~/services/auth.server";
 import { s3UploaderHandler } from "~/services/upload.server";
 
 // TODO:
@@ -16,9 +16,12 @@ import { s3UploaderHandler } from "~/services/upload.server";
 // and  https://github.com/paalamugan/optimizing-large-file-upload-performance/blob/main/app/utils/uploadFile.ts
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
   console.log("add file");
   const modelId = randomId();
-  const folder = "models";
+  const folder = user?.userId || "na";
   const s3uploaderWithId: UploadHandler = (props: UploadHandlerPart) =>
     s3UploaderHandler(props, modelId, folder);
 
@@ -31,7 +34,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     audioId: modelId,
     fileName: formData.get("file") as string,
     userId: formData.get("userId") as string,
-    title: formData.get("file") as string,
+    title: modelId,
     createdAt: new Date().toISOString(),
   };
 

@@ -1,13 +1,14 @@
-import { Outlet } from "@remix-run/react";
+import { Outlet, useLocation } from "@remix-run/react";
 import Header from "./header";
-import { useContext } from "react";
-import { UserContext } from "~/providers/userContext";
 
 export default function Layout() {
-  const { user } = useContext(UserContext);
+  const location = useLocation();
+  const hideHeader =
+    location.pathname.includes("login") ||
+    location.pathname.includes("register");
   return (
     <div className="">
-      {user && <Header />}
+      {!hideHeader && <Header />}
       <Outlet />
     </div>
   );
