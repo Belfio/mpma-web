@@ -8,7 +8,13 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 
 import { Resource } from "sst";
-import { UserType, CredType, AudioType } from "./types";
+import {
+  UserType,
+  CredType,
+  AudioType,
+  ReportType,
+  TemplateType,
+} from "./types";
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
@@ -82,7 +88,7 @@ const queryItems = async (
       Limit: limit,
       ExclusiveStartKey: lastEvaluatedKey,
     });
-    console.log("queryItems command", command);
+    // console.log("queryItems command", command);
     const data = await client.send(command);
 
     if (!data.Items) return { items: null };
@@ -212,6 +218,68 @@ const db = {
     delete: async (audioId: string) => {
       await deleteItem(Resource.AudioRecording.name, {
         audioId,
+      });
+    },
+  },
+  report: {
+    getAll: async (userId: string): Promise<ReportType[]> => {
+      const rep = (await queryItems(
+        Resource.Report.name,
+        "UserIndex",
+        "userId",
+        userId
+      )) as {
+        items: ReportType[];
+      };
+      return rep.items;
+    },
+    create: async (rep: ReportType): Promise<responseType> => {
+      const response = await createItem(Resource.Report.name, rep);
+      if (!response.isSuccess) {
+        throw new Error(`Error creating user: ${response.msg}`);
+      }
+      return response;
+    },
+    get: async (reportId: string): Promise<ReportType | null> => {
+      const rep = (await getItem(Resource.Report.name, {
+        reportId,
+      })) as ReportType;
+      return rep;
+    },
+    delete: async (reportId: string) => {
+      await deleteItem(Resource.Report.name, {
+        reportId,
+      });
+    },
+  },
+  template: {
+    getAll: async (userId: string): Promise<TemplateType[]> => {
+      const rep = (await queryItems(
+        Resource.Template.name,
+        "UserIndex",
+        "userId",
+        userId
+      )) as {
+        items: TemplateType[];
+      };
+      return rep.items;
+    },
+    create: async (rep: TemplateType): Promise<responseType> => {
+      const response = await createItem(Resource.Template.name, rep);
+      if (!response.isSuccess) {
+        throw new Error(`Error creating user: ${response.msg}`);
+      }
+      return response;
+    },
+    get: async (templateId: string): Promise<TemplateType | null> => {
+      const rep = (await getItem(Resource.Template.name, {
+        templateId,
+      })) as TemplateType;
+      return rep;
+    },
+    delete: async (templateId: string) => {
+      await deleteItem(Resource.Template.name, {
+        templateId,
       });
     },
   },

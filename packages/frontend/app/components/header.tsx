@@ -12,15 +12,15 @@ export default function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="h-16 bg-white/15  flex items-center justify-center text-white font-semibold w-screen px-8 m-auto border-[1px] border-white">
-      <div className="flex items-center justify-between max-w-2xl mx-auto">
+    <div className="h-16 bg-gray-800  flex items-center justify-end text-white font-semibold w-screen px-8 m-auto border-[2px] border-b border-gray-400">
+      <div className="flex items-center justify-end max-w-2xl ">
         <NavigationMenu>
-          <NavigationMenuList className="gap-4 justify-center">
+          <NavigationMenuList className="gap-4 justify-end">
             <NavigationMenuItem>
               <Link to="/">
                 <Button
                   variant="link"
-                  className={`text-gray-800 font-regula ${
+                  className={`text-gray-100 font-regula ${
                     isActive("/") ? "underline" : ""
                   }`}
                 >
@@ -32,7 +32,7 @@ export default function Header() {
               <Link to="/audio">
                 <Button
                   variant="link"
-                  className={`text-gray-800 font-regular ${
+                  className={`text-gray-100 font-regular ${
                     isActive("/audio") ? "underline" : ""
                   }`}
                 >
@@ -41,14 +41,14 @@ export default function Header() {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link to="/reports">
+              <Link to="/template">
                 <Button
                   variant="link"
-                  className={`text-gray-800 font-regular ${
+                  className={`text-gray-100 font-regular ${
                     isActive("/reports") ? "underline" : ""
                   }`}
                 >
-                  Reports
+                  Report templates
                 </Button>
               </Link>
             </NavigationMenuItem>

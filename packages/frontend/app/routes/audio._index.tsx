@@ -15,15 +15,18 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   const audios = useLoaderData<AudioType[]>();
   return (
-    <div className="flex flex-col h-screen mt-12 justify-center">
+    <div className="flex flex-col h-full mt-12 justify-center">
       <div className="flex flex-col gap-4 justify-center text-center">
         {audios &&
           audios.map((audio) => (
-            <div key={audio.audioId} className="flex gap-2">
+            <div
+              key={audio.audioId}
+              className="flex gap-4 justify-center items-center"
+            >
               <Link to={`/audio/id/${audio.audioId}`}>
-                <div key={audio.audioId} className="">
+                <Button key={audio.audioId} variant="link" className="">
                   {audio.title}
-                </div>
+                </Button>
               </Link>
               <Form method="post" action="/api/audio/delete">
                 <input type="hidden" name="audioId" value={audio.audioId} />
@@ -33,7 +36,7 @@ export default function Index() {
             </div>
           ))}
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-8">
         <Link to="/audio/upload">
           <Button variant="outline">Upload</Button>
         </Link>

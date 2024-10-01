@@ -12,6 +12,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Resource } from "sst";
 import { Readable } from "stream";
+import { sdkStreamMixin } from "@aws-sdk/util-stream-node";
 
 const s3Client = new S3Client({ region: "us-east-1" });
 
@@ -134,3 +135,31 @@ const s3 = {
 };
 
 export default s3;
+
+export const bufferToFile = async (
+  buffer: Buffer,
+  keyParam: string
+): Promise<File> => {
+  const blob = new Blob([buffer], { type: "json" });
+  const file = new File([blob], keyParam, { type: "json" });
+  return file;
+};
+
+export const readableToFile = async (
+  readable: Readable,
+  keyParam: string
+): Promise<File> => {
+  const buffer = await streamToBuffer(readable);
+  const blob = new Blob([buffer], { type: "json" });
+  const file = new File([blob], keyParam, { type: "json" });
+  return file;
+};
+
+export const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    stream.on("data", (chunk) => chunks.push(chunk));
+    stream.on("end", () => resolve(Buffer.concat(chunks)));
+    stream.on("error", reject);
+  });
+};

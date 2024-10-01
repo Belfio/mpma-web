@@ -31,3 +31,30 @@ export const AudioSchema = z.object({
 });
 
 export type AudioType = z.infer<typeof AudioSchema>;
+
+export const TemplateSchema = z.object({
+  userId: z.string(),
+  templateId: z.string(),
+  title: z.string(),
+  template: z.string(),
+  createdAt: z.string().default(() => new Date().toISOString()),
+  updatedAt: z
+    .string()
+    .default(() => new Date().toISOString())
+    .optional(),
+  description: z.string().optional(),
+});
+
+export type TemplateType = z.infer<typeof TemplateSchema>;
+
+export const ReportSchema = z.object({
+  userId: z.string(),
+  reportId: z.string(),
+  audioId: z.string(),
+  title: z.string(),
+  report: z.string(),
+  templateId: z.string(),
+  createdAt: z.string().default(() => new Date().toISOString()),
+});
+
+export type ReportType = z.infer<typeof ReportSchema>;

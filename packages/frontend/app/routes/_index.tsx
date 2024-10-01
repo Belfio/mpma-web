@@ -18,7 +18,7 @@ export default function Index() {
     setUser(user);
   }, [user, setUser]);
   return (
-    <div className="flex h-screen items-center  w-2/3 m-auto">
+    <div className="flex items-center  w-2/3 m-auto mt-12">
       <div className="flex flex-col items-center gap-16">
         <header className="flex flex-col items-center gap-9">
           <h1 className="text-4xl font-bold">From audio to report</h1>
@@ -29,10 +29,6 @@ export default function Index() {
             taking, and revision of your reports.
           </p>
         </header>
-
-        <nav className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-gray-200 p-6 dark:border-gray-700">
-          qui una lista di cose
-        </nav>
       </div>
     </div>
   );

@@ -42,7 +42,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     ...audioProfile,
   });
 
-  return redirect("/audio");
+  return redirect(`/audio/id/${modelId}`);
 };
 
 // const getFilesSize = (modelId: string) => {
