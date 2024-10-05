@@ -2,6 +2,8 @@ import OpenAI from "openai";
 import * as fs from "fs";
 import * as path from "path";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
+import { z } from "zod";
+import { zodResponseFormat } from "openai/helpers/zod";
 
 const openai = new OpenAI({
   organization: process.env.OPENAI_ORG,
@@ -59,10 +61,12 @@ const textChat = async (instruction: string, text: string, name?: string) =>
 const imageChat = async (
   instruction: string,
   text: string,
-  imageUrl: string
+  imageUrl: string,
+  responseFormat?: z.ZodType<any, z.ZodTypeDef, any>,
+  nameFormat?: string
 ) => {
   const response = await openai.chat.completions.create({
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
@@ -81,6 +85,9 @@ const imageChat = async (
         ],
       },
     ],
+    response_format: responseFormat
+      ? zodResponseFormat(responseFormat, nameFormat || "obj")
+      : undefined,
   });
   return response.choices[0];
 };
@@ -157,10 +164,26 @@ const createThread = async () => {
   return thread;
 };
 
-const addMessageToThread = async (threadId: string, message: string) => {
+const addMessageToThread = async (
+  threadId: string,
+  message: string,
+  fileId?: string
+) => {
   await openai.beta.threads.messages.create(threadId, {
     role: "user",
     content: message,
+    attachments: fileId
+      ? [
+          {
+            file_id: fileId,
+            tools: [
+              {
+                type: "file_search",
+              },
+            ],
+          },
+        ]
+      : undefined,
   });
 };
 
@@ -171,6 +194,36 @@ const runAssistant = async (threadId: string, assistantId: string) => {
   return run;
 };
 
+const uploadFile = async (file: File): Promise<string> => {
+  const uploadedFile = await openai.files.create({
+    file: file,
+    purpose: "assistants",
+  });
+  return uploadedFile.id;
+};
+
+const deleteFile = async (fileId: string) => {
+  await openai.files.del(fileId);
+};
+
+const runPollingOneMinute = async (threadId: string, runId: string) => {
+  let counter = 0;
+  while (counter < 60) {
+    const run = await openai.beta.threads.runs.retrieve(threadId, runId);
+
+    if (run.status === "completed") {
+      const messages = await openai.beta.threads.messages.list(run.thread_id);
+      console.log(messages);
+      return messages;
+    }
+    counter = counter + 3;
+    console.log(`Elapsed seconds: ${counter}`);
+    console.log(run.status);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+  console.log("Error: run did not complete");
+  return "error";
+};
 const oai = {
   audioTranscription,
   audioTranslation,
@@ -182,6 +235,9 @@ const oai = {
   createThread,
   addMessageToThread,
   runAssistant,
+  uploadFile,
+  deleteFile,
+  runPollingOneMinute,
 };
 
 export default oai;

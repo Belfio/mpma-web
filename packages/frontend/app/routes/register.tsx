@@ -1,6 +1,6 @@
 import { UserAuthForm } from "~/components/UserAuthForm";
 import { Link } from "@remix-run/react";
-import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { ActionFunctionArgs } from "@remix-run/node";
 import { authenticator } from "~/services/auth.server";
 
 export default function RegisterPage() {
@@ -68,7 +68,4 @@ export async function action({ request }: ActionFunctionArgs) {
     successRedirect: "/",
     failureRedirect: "/register?error=true",
   });
-}
-export async function loader({ request }: LoaderFunctionArgs) {
-  return {};
 }

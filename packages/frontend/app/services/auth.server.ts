@@ -17,7 +17,7 @@ authenticator.use(
     const email = form.get("email");
     const password = form.get("password");
     const isRegistering = JSON.parse(form.get("register") as string);
-    console.log("isRegistering", isRegistering, email, password);
+    console.log("isRegistering", isRegistering, email);
     if (typeof email !== "string" || typeof password !== "string") {
       return;
     }

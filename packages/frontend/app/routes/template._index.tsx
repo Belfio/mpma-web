@@ -41,6 +41,9 @@ export default function Index() {
       <Link to="/template/create">
         <Button variant="outline">Create a new report template</Button>
       </Link>
+      <Link to="/template/upload">
+        <Button variant="outline">Upload a template</Button>
+      </Link>
     </div>
   );
 }

@@ -40,35 +40,6 @@ const getItem = async <T extends Record<string, any>>(
   return data.Item;
 };
 
-const getNItems = async (
-  tableName: string,
-  indexName: string,
-  limit: number,
-  lastEvaluatedKey?: any
-): Promise<{ items: any[] | null; lastEvaluatedKey?: any }> => {
-  try {
-    const command = new QueryCommand({
-      TableName: tableName,
-      IndexName: indexName,
-      KeyConditionExpression: "tConst = :tConst",
-      ExpressionAttributeValues: {
-        ":tConst": "metadata", // Adjust this value as needed
-      },
-      ScanIndexForward: false, // To get items in descending order
-      Limit: limit,
-      ExclusiveStartKey: lastEvaluatedKey,
-    });
-
-    const data = await client.send(command);
-
-    if (!data.Items) return { items: null };
-    return { items: data.Items, lastEvaluatedKey: data.LastEvaluatedKey };
-  } catch (error) {
-    console.log("getNItems error", error);
-    return { items: null };
-  }
-};
-
 const queryItems = async (
   tableName: string,
   indexName: string,
