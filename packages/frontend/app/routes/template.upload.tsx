@@ -1,17 +1,14 @@
 import {
   unstable_parseMultipartFormData,
-  UploadHandler,
   UploadHandlerPart,
   type ActionFunctionArgs,
   type MetaFunction,
 } from "@remix-run/node";
 import { Form, json } from "@remix-run/react";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import openai from "~/lib/openai";
-import OpenAI from "openai";
-import { z } from "zod";
-import { pdfDataExtraction, titleFunction } from "./api.docs.uploadAndParse";
 
 export const meta: MetaFunction = () => {
   return [
@@ -44,15 +41,19 @@ export async function action({ request }: ActionFunctionArgs) {
 
   console.log(file.name);
 
-  const data = await pdfDataExtraction(
+  const data = await openai.pdfDataExtraction(
     file,
     "Who is the main character of the story?"
   );
-  // console.log("data complete daje", JSON.stringify(data, null, 2));
-  console.log(
-    "data complete daje",
-    JSON.stringify(data?.data[0].content[0].text.value, null, 2)
+  const value = await openai.textChat(
+    data,
+    "What is the name? Just text me the name",
+    "",
+    z.object({
+      name: z.string(),
+    })
   );
+  console.log(value);
   return json({ success: true });
 }
 

@@ -32,29 +32,7 @@ export const idCardDataExtraction = async (imageUrl: string) => {
 //   return idCardDataExtraction(url);
 // };
 
-export const pdfDataExtraction = async (
-  file: File,
-  prompt: string,
-  tools: OpenAI.Beta.Assistants.AssistantTool[] = [{ type: "file_search" }]
-) => {
-  const assistant = await openai.createAssistant(
-    "Information Extraction Assistant",
-    "Read the document thoroughly and extract the information I am going to ask you",
-    tools
-  );
-  console.log(assistant);
-  console.log("file", file.name);
-  const fileId = await openai.uploadFile(file);
-
-  const thread = await openai.createThread();
-
-  await openai.addMessageToThread(thread.id, prompt, fileId);
-  console.log("thread", thread);
-  const run = await openai.runAssistant(thread.id, assistant.id);
-  const messages = await openai.runPollingOneMinute(thread.id, run.id);
-  //   console.log(messages);
-  return messages;
-};
+export const pdfDataExtraction = openai.pdfDataExtraction;
 
 export const idCardFunction: OpenAI.Beta.Assistants.AssistantTool = {
   type: "function",

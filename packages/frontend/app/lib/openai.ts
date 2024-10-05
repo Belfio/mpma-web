@@ -46,8 +46,14 @@ const audioCreateSpeech = async (
   };
 };
 
-const textChat = async (instruction: string, text: string, name?: string) =>
-  await openai.chat.completions.create({
+const textChat = async (
+  instruction: string,
+  text: string,
+  name?: string,
+  responseFormat?: z.ZodType<any, z.ZodTypeDef, any>,
+  nameFormat?: string
+) => {
+  const res = await openai.chat.completions.create({
     messages: [
       {
         role: "system",
@@ -56,7 +62,18 @@ const textChat = async (instruction: string, text: string, name?: string) =>
       { role: "user", content: text },
     ],
     model: "gpt-4o",
+    response_format: responseFormat
+      ? zodResponseFormat(responseFormat, nameFormat || "obj")
+      : undefined,
   });
+  try {
+    return res.choices[0].message.content;
+  } catch (error) {
+    console.log("error", error);
+    console.log("res", JSON.stringify(res, null, 2));
+    return "error";
+  }
+};
 
 const imageChat = async (
   instruction: string,
@@ -92,7 +109,7 @@ const imageChat = async (
   return response.choices[0];
 };
 
-const getFunctionParams = async (
+const chatWithFunction = async (
   textToParse: string,
   functionInstruction: string,
   functionName: string,
@@ -237,13 +254,44 @@ const runPollingOneMinute = async (threadId: string, runId: string) => {
   console.log("Error: run did not complete");
   return "error";
 };
+
+const pdfDataExtraction = async (
+  file: File,
+  prompt: string,
+  tools: OpenAI.Beta.Assistants.AssistantTool[] = [{ type: "file_search" }]
+) => {
+  const assistant = await createAssistant(
+    "Information Extraction Assistant",
+    "Read the document thoroughly and extract the information I am going to ask you",
+    tools
+  );
+  // console.log(assistant);
+  // console.log("file", file.name);
+  const fileId = await uploadFile(file);
+
+  const thread = await createThread();
+
+  await addMessageToThread(thread.id, prompt, fileId);
+  // console.log("thread", thread);
+  const run = await runAssistant(thread.id, assistant.id);
+  const messages = await runPollingOneMinute(thread.id, run.id);
+  //   console.log(messages);
+  try {
+    return messages?.data[0].content[0].text.value;
+  } catch (error) {
+    console.log("error", error);
+    console.log("messages", JSON.stringify(messages, null, 2));
+    return "error";
+  }
+};
+
 const oai = {
   audioTranscription,
   audioTranslation,
   audioCreateSpeech,
   textChat,
   imageChat,
-  getFunctionParams,
+  chatWithFunction,
   createAssistant,
   createThread,
   addMessageToThread,
@@ -251,6 +299,7 @@ const oai = {
   uploadFile,
   deleteFile,
   runPollingOneMinute,
+  pdfDataExtraction,
 };
 
 export default oai;
