@@ -39,20 +39,21 @@ export const pdfDataExtraction = async (
 ) => {
   const assistant = await openai.createAssistant(
     "Information Extraction Assistant",
-    "Read the document thoroughly and extract the information I am oing to ask you",
+    "Read the document thoroughly and extract the information I am going to ask you",
     tools
   );
   console.log(assistant);
-
+  console.log("file", file.name);
   const fileId = await openai.uploadFile(file);
 
   const thread = await openai.createThread();
 
   await openai.addMessageToThread(thread.id, prompt, fileId);
-  console.log(thread);
+  console.log("thread", thread);
   const run = await openai.runAssistant(thread.id, assistant.id);
   const messages = await openai.runPollingOneMinute(thread.id, run.id);
-  console.log(messages);
+  //   console.log(messages);
+  return messages;
 };
 
 export const idCardFunction: OpenAI.Beta.Assistants.AssistantTool = {

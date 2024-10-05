@@ -46,10 +46,13 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const data = await pdfDataExtraction(
     file,
-    "Extract the title from the document",
-    [titleFunction]
+    "Who is the main character of the story?"
   );
-  console.log(data);
+  // console.log("data complete daje", JSON.stringify(data, null, 2));
+  console.log(
+    "data complete daje",
+    JSON.stringify(data?.data[0].content[0].text.value, null, 2)
+  );
   return json({ success: true });
 }
 

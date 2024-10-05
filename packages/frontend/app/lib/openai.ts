@@ -216,6 +216,19 @@ const runPollingOneMinute = async (threadId: string, runId: string) => {
       console.log(messages);
       return messages;
     }
+    if (run.status === "requires_action") {
+      console.log("requires_action");
+      await openai.beta.threads.runs.submitToolOutputs(run.thread_id, run.id, {
+        tool_outputs: [
+          {
+            tool_call_id:
+              run?.required_action?.submit_tool_outputs?.tool_calls[0].id,
+            output:
+              "Please continue the conversation based on the previous context.",
+          },
+        ],
+      });
+    }
     counter = counter + 3;
     console.log(`Elapsed seconds: ${counter}`);
     console.log(run.status);
