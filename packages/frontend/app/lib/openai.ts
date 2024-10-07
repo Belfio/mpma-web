@@ -61,7 +61,7 @@ const textChat = async (
       },
       { role: "user", content: text },
     ],
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     response_format: responseFormat
       ? zodResponseFormat(responseFormat, nameFormat || "obj")
       : undefined,
@@ -149,7 +149,7 @@ const chatWithFunction = async (
   ];
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     messages: messages,
     tools: tools.map((tool) => ({
       ...tool,

@@ -9,8 +9,21 @@ body {
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+  background-color: white;
+  background-image: radial-gradient(circle, #888 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
+@layer components {
+  .backdrop-blur-md {
+    backdrop-filter: blur(40px);
+    filter: blur(12px);
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+  }
+}
 @layer base {
   :root {
     --background: hsl(0, 0%, 98%);

@@ -7,7 +7,7 @@ export default function Layout() {
     location.pathname.includes("login") ||
     location.pathname.includes("register");
   return (
-    <div className="">
+    <div className="h-full top-0">
       {!hideHeader && <Header />}
       <Outlet />
     </div>

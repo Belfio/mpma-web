@@ -39,6 +39,9 @@ export default function Index() {
       <div className="flex justify-center mt-8">
         <Link to="/audio/upload">
           <Button variant="outline">Upload</Button>
+        </Link>{" "}
+        <Link to="/audio/record">
+          <Button variant="outline">Record</Button>
         </Link>
       </div>
     </div>
