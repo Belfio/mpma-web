@@ -29,7 +29,7 @@ export function UserNav({ user }: { user: { email: string } }) {
         <Button variant="ghost" className="relative h-10 w-10 rounded-full ">
           <Avatar className="h-10 w-10 ">
             <AvatarFallback className="bg-gray-800">
-              <span className="text-xl font-extrabold">
+              <span className="text-xl font-bold">
                 {user.email[0].toUpperCase()}
               </span>
             </AvatarFallback>

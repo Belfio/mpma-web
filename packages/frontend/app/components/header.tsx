@@ -15,7 +15,7 @@ export default function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="sticky top-0 p-2 w-full">
+    <div className="fixed top-0 p-2 w-full">
       <div className="rounded-xl border border-white/20 shadow-lg p-6  h-16 flex items-center overflow-hidden justify-end text-white font-semibold w-full px-8 relative border-gray-400">
         <div className="absolute left-0 top-0 w-full h-full opacity-50 blur-lg rounded-xl overflow-hidden bg-[#d7d7d7]"></div>
         <div className="flex items-center justify-end max-w-2xl  bg-transparent">
@@ -25,7 +25,7 @@ export default function Header() {
                 <Link to="/">
                   <Button
                     variant="link"
-                    className={`text-gray-800 font-regula ${
+                    className={`text-gray-800 text-xs tracking-wider uppercase font-bold ${
                       isActive("/") ? "underline" : ""
                     }`}
                   >
@@ -37,7 +37,7 @@ export default function Header() {
                 <Link to="/audio">
                   <Button
                     variant="link"
-                    className={`text-gray-800 font-regular ${
+                    className={`text-gray-800 text-xs tracking-wider uppercase font-bold ${
                       isActive("/audio") ? "underline" : ""
                     }`}
                   >
@@ -49,7 +49,7 @@ export default function Header() {
                 <Link to="/template">
                   <Button
                     variant="link"
-                    className={`text-gray-800 font-regular ${
+                    className={`text-gray-800 text-xs tracking-wider uppercase font-bold ${
                       isActive("/reports") ? "underline" : ""
                     }`}
                   >
@@ -63,7 +63,7 @@ export default function Header() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div className="absolute inset-0 rounded-xl border-t-2 border-l-2 border-white/50 pointer-events-none bg-transparent backdrop-blur-md"></div>
+        <div className="absolute inset-0 rounded-xl border-t-2 border-l-2 border-white/50 pointer-events-none bg-transparent backdrop-blur-xs"></div>
       </div>
     </div>
   );

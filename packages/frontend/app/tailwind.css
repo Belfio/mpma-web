@@ -89,3 +89,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.backdrop-blur-xs {
+  backdrop-filter: blur(1px);
+  /* filter: blur(2px);
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px); */
+}
