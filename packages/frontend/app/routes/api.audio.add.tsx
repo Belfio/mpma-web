@@ -30,11 +30,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     s3uploaderWithId
   );
   console.log("formData", formData);
+  const extension = String(formData.get("file")).split(".").pop();
   const audioProfile: AudioType = {
     audioId: modelId,
     fileName: formData.get("file") as string,
     userId: formData.get("userId") as string,
-    title: modelId,
+    title: `audio-${Date.now().toString()}.${extension}`,
     createdAt: new Date().toISOString(),
   };
 

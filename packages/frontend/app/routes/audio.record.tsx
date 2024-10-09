@@ -101,8 +101,8 @@ export default function RecordAudio() {
       console.log("Saving audio:", audioUrl);
       const audioBlob = await localforage.getItem<Blob>("audioBlob");
       if (audioBlob) {
-        const fileName = `audio-${Date.now()}.wav`;
-        const audioFile = new File([audioBlob], "audio.wav", {
+        const fileName = `audio-${Date.now().toString()}.wav`;
+        const audioFile = new File([audioBlob], fileName, {
           type: "audio/wav",
         });
         // audioId: modelId,
@@ -113,7 +113,6 @@ export default function RecordAudio() {
         // console.log("audioFile", audioFile);
         const formData = new FormData();
         formData.append("file", audioFile);
-        formData.append("modelId", fileName);
         formData.append("userId", user?.userId || "na");
         await fetcher.submit(formData, {
           method: "post",

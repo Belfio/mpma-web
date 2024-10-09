@@ -14,18 +14,37 @@ export const index = async (event: S3Event) => {
     return;
   }
   console.log("File format check - .m4a: ", event.Records[0].s3.object.key);
-  if (!event.Records[0].s3.object.key.endsWith(".m4a")) {
-    return;
+  if (event.Records[0].s3.object.key.endsWith(".m4a")) {
+    console.log("transcribing m4a...");
+    const key = event.Records[0].s3.object.key;
+    const transcript = await runTranscription(key);
+
+    console.log("transcript: ", transcript);
+    const file = JSON.stringify(transcript);
+    const jsonKey = key.replace(".m4a", ".json");
+    await s3.uploads.put(jsonKey, file);
+
+    return {
+      statusCode: 200,
+      body: "ok",
+    };
   }
-  console.log("transcribing...");
-  const key = event.Records[0].s3.object.key;
-  const transcript = await runTranscription(key);
 
-  console.log("transcript: ", transcript);
-  const file = JSON.stringify(transcript);
-  const jsonKey = key.replace(".m4a", ".json");
-  await s3.uploads.put(jsonKey, file);
+  if (event.Records[0].s3.object.key.endsWith(".wav")) {
+    console.log("transcribing wav...");
+    const key = event.Records[0].s3.object.key;
+    const transcript = await runTranscription(key);
 
+    console.log("transcript: ", transcript);
+    const file = JSON.stringify(transcript);
+    const jsonKey = key.replace(".wav", ".json");
+    await s3.uploads.put(jsonKey, file);
+
+    return {
+      statusCode: 200,
+      body: "ok",
+    };
+  }
   return {
     statusCode: 200,
     body: "ok",

@@ -14,17 +14,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const templateId = formData.get("comboValue") as string;
   const audioId = formData.get("audioId") as string;
+  const audio = await db.audio.get(audioId);
   console.log(templateId, audioId, formData);
   const reportTemplate = await db.template.get(templateId);
   if (!reportTemplate) return redirect("/reports");
-  const transcriptFileName = `${user.userId}/${audioId}.json`;
+  const transcriptFileName = `${audio?.fileName?.split(".")[0]}.json`;
+  console.log("transcriptFileName", transcriptFileName);
   const transcriptBuffer = await s3.audio.get(transcriptFileName);
   const transcript = transcriptBuffer.toString();
-
+  console.log("transcript", transcript);
   const reportResult = await transcriptToReport(
     transcript,
     reportTemplate.template
   );
+  console.log("reportResult", reportResult);
+  if (!reportResult.title || !reportResult.summary) {
+    throw new Error("No title or summary");
+  }
   const report: ReportType = {
     userId: user.userId,
     reportId: randomId(),

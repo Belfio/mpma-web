@@ -108,6 +108,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!user) return redirect("/login");
   const { audioId } = params;
   if (!audioId) return { user, audio: "Error" };
+
   const audio = await db.audio.get(audioId);
   const transcriptReadable = await s3.audio.getStream(
     audio?.fileName.split(".")[0] + ".json"

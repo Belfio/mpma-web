@@ -18,8 +18,9 @@ export const transcriptToReport = async (
     The report is: ${report}
     `;
   const response = await openai.textChat(prompt, text);
+  console.log("response", response);
   try {
-    return JSON.parse(response.choices[0].message.content as string);
+    return JSON.parse(response as string);
   } catch (error) {
     console.error(error);
     return { title: "", summary: "" };

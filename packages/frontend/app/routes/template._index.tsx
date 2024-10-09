@@ -22,10 +22,7 @@ export default function Index() {
             <Link to={`/template/id/${template.templateId}`}>
               <Button variant="link">{template.title}</Button>
             </Link>
-            <Form
-              action={`/template/id/${template.templateId}/delete`}
-              method="post"
-            >
+            <Form action={`/api/template/delete`} method="post">
               <input
                 type="hidden"
                 name="templateId"
