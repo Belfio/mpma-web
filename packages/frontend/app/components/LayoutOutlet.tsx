@@ -9,7 +9,9 @@ export default function Layout() {
   return (
     <div className="h-full top-0 pt-16">
       {!hideHeader && <Header />}
-      <Outlet />
+      <div className="w-[85%] lg:w-full m-auto lg:max-w-2xl">
+        <Outlet />
+      </div>
     </div>
   );
 }

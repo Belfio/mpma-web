@@ -3,6 +3,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { useContext, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { CredType } from "~/lib/types";
 import { UserContext } from "~/providers/userContext";
 import { authenticator } from "~/services/auth.server";
 
@@ -14,13 +15,13 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
+  const { user } = useLoaderData<typeof loader>() as { user: CredType };
   const { setUser } = useContext(UserContext);
   useEffect(() => {
     setUser(user);
   }, [user, setUser]);
   return (
-    <div className="flex items-center  w-2/3 m-auto mt-12 max-w-xl">
+    <div className="flex items-center  m-auto mt-12 max-w-xl">
       <Card>
         <CardHeader>
           <CardTitle>
@@ -45,10 +46,15 @@ export default function Index() {
   );
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+}: LoaderFunctionArgs): Promise<{ user: CredType } | null> {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
+  if (!user) {
+    return null;
+  }
   console.log("authed");
   return { user };
 }

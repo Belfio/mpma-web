@@ -16,7 +16,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   const audios = useLoaderData<AudioType[]>();
   return (
-    <div className="flex flex-col h-full mt-12 justify-center max-w-2xl m-auto">
+    <div className="flex flex-col h-full mt-12 justify-center max-w-2xl m-auto ">
       <Card>
         <CardHeader>
           <CardTitle>
