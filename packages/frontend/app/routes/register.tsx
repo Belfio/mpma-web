@@ -6,7 +6,7 @@ import { authenticator } from "~/services/auth.server";
 export default function RegisterPage() {
   return (
     <>
-      <div className=" relative  h-screen flex-col items-center justify-center  w-screen">
+      <div className=" relative  h-screen flex-col items-center justify-center">
         <div className="relative  h-full flex-col p-10 text-white dark:border-r lg:flex  bg-[var(--darkblue)]">
           <div className="relative z-20 ">
             {/* <img src={Logo} alt="GL1" className="w-[120px]" /> */}
